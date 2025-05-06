@@ -1,1 +1,48 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Where your dotfiles live (override if needed)
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
+TS=$(date +%Y%m%d%H%M%S)
+
+# list of "src:dest" mappings
+links=(
+  "$DOTFILES_DIR/.config/nvim:$HOME/.config/nvim"
+  "$DOTFILES_DIR/.config/wezterm:$HOME/.config/wezterm"
+  "$DOTFILES_DIR/.zshrc:$HOME/.zshrc"
+  "$DOTFILES_DIR/.gitconfig:$HOME/.gitconfig"
+)
+
+echo "▶ Linking dotfiles from $DOTFILES_DIR …"
+
+for mapping in "${links[@]}"; do
+  IFS=':' read -r src dest <<< "$mapping"
+
+  # 1) Skip if source doesn't exist
+  if [ ! -e "$src" ]; then
+    echo "  ⚠️  Source missing: $src — skipping."
+    continue
+  fi
+
+  # 2) Backup any real file/dir at $dest
+  if [ -e "$dest" ] && [ ! -L "$dest" ]; then
+    mv "$dest" "${dest}.backup.$TS"
+    echo "  🔄  Backed up $dest → ${dest}.backup.$TS"
+  fi
+
+  # 3) Remove old symlink so ln -s will succeed
+  if [ -L "$dest" ]; then
+    rm "$dest"
+    echo "  🗑️  Removed old symlink $dest"
+  fi
+
+  # 4) Ensure parent dir exists
+  mkdir -p "$(dirname "$dest")"
+
+  # 5) Create the symlink
+  ln -s "$src" "$dest"
+  echo "  🔗  ln -s $src $dest"
+done
+
+echo "✅ All done!"
 
