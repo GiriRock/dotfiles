@@ -9,6 +9,7 @@ TS=$(date +%Y%m%d%H%M%S)
 links=(
   "$DOTFILES_DIR/.config/nvim:$HOME/.config/nvim"
   "$DOTFILES_DIR/.config/wezterm:$HOME/.config/wezterm"
+  "$DOTFILES_DIR/.config/ghostty:$HOME/.config/ghostty"
   "$DOTFILES_DIR/.zshrc:$HOME/.zshrc"
   "$DOTFILES_DIR/.gitconfig:$HOME/.gitconfig"
 )
