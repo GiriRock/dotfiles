@@ -45,6 +45,16 @@ fdx() {
   anyconnect() {
     sudo openconnect --protocol=anyconnect --server=webvpn.dha.gov.ae --servercert pin-sha256:aAHaL/o3+w8U5a+ltFuCJaL7TNRjJRac21comZQpNrc=
   }
+
+personal-obsidian(){
+  cd "$HOME/Personal/Obsidian/" && nvim .
+}
+
+work-obsidian() {
+  cd "$HOME/Work/work-obsidian/" && nvim .
+}
+
+
 # --- Optional: Add quick aliases ---
 alias f='fd'
 alias fx='fdx'
